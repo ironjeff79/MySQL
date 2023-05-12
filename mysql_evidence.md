@@ -134,7 +134,7 @@
 ## 4.3.2 &emsp;BETWEEN
 <br>
 
-![between](picture/between.PNG) 
+![between](picture/BETWEEN.PNG) 
 <br>
 <br>
 
