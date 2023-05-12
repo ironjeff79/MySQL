@@ -1,5 +1,7 @@
 ## 2.3&emsp;表の作成とデータの登録
 - INSERT INTO `goods`.`goods` (`idgoods`, `goodsname`, `price`) VALUES ('1', 'shirts', '350');
+<br>
+
 ![表の作成とデータの登録](picture/表の作成とデータの登録.PNG) 
 <br>
 <br>
