@@ -1,16 +1,16 @@
 ## 2.3&emsp;表の作成とデータの登録
 - INSERT INTO `goods`.`goods` (`idgoods`, `goodsname`, `price`) VALUES ('1', 'shirts', '350');
-![表の作成とデータの登録](picture/表の作成とデータの登録.png) 
+![表の作成とデータの登録](picture/表の作成とデータの登録.PNG) 
 <br>
 <br>
 
 ## 2.4.2&emsp;列の順序の指定
-![指定顺序](picture/指定顺序.png) 
+![指定顺序](picture/指定顺序.PNG) 
 <br>
 <br>
 
 ## 2.4.5&emsp;検査条件
-![检索条件](picture/检索条件.png) 
+![检索条件](picture/检索条件.PNG) 
 <br>
 <br>
 
@@ -19,7 +19,7 @@
 - SELECT goodsname,price, price+50 newprice from goods.goods;
 <br>
 
-![加法](picture/加法.png) 
+![加法](picture/加法.PNG) 
 <br>
 <br>
 
@@ -30,13 +30,13 @@
 - SELECT goodsname,price,goodsname || price totalinfo from goods.goods;
 <br>
 
-![拼接](picture/拼接.png) 
+![拼接](picture/拼接.PNG) 
 <br>
 
 - SELECT goodsname,price,concat(goodsname,',',price) totalinfo from goods.goods;
 <br>
 
-![拼接](picture/拼接加符号.png) 
+![拼接](picture/拼接加符号.PNG) 
 <br>
 <br>
 
@@ -44,33 +44,33 @@
 <br>
 
 ## 3.3.3&emsp;<演算子
-![比较](picture/比较.png) 
+![比较](picture/比较.PNG) 
 <br>
 
 ## 3.3.4&emsp;<>演算子
 - 表示不包含 &emsp;&emsp;Oracle用的是&emsp;[！=]
 - 特定のデータ以外のすべてのデータを取り出す  
 
-![比较2](picture/比较2.png) 
+![比较2](picture/比较2.PNG) 
 <br>
 <br>
 
 ## 3.3.5&emsp;NULL&emsp; %&emsp;NOT NULL 
-![isnotnull](picture/null.png) 
+![isnotnull](picture/null.PNG) 
 <br>
 
 # 4.1&emsp;論理演算子
 <br>
 
 ## 4.1.1&emsp;AND演算子
-![and](picture/AND.png) 
+![and](picture/AND.PNG) 
 <br>
 
 ## 4.1.3&emsp;NOT演算子
 - この場合には、＝演算子の条件を反転させているので、<>演算子と同じ結果になる。
 <br>
 
-![NOT](picture/NOT.png) 
+![NOT](picture/NOT.PNG) 
 <br>
 <br>
 <br>
@@ -83,11 +83,11 @@
 ### (模糊查找 百分号内字符无限制)
 <br>
 
-![LIKE](picture/LIKE.png) 
+![LIKE](picture/LIKE.PNG) 
 <br>
 <br>
 
-![LIKE2](picture/LIKE2.png) 
+![LIKE2](picture/LIKE2.PNG) 
 <br>
 <br>
 
@@ -97,14 +97,14 @@
 - 也可以这样使用&emsp; 'E % y＿'
 <br>
 
-![单个模糊字符](picture/单个模糊字符.png) 
+![单个模糊字符](picture/单个模糊字符.PNG) 
 <br>
 <br>
 
 ## 结合以上两种用法
 <br>
 
-![结合用法](picture/结合用法.png) 
+![结合用法](picture/结合用法.PNG) 
 <br>
 <br>
 <br>
@@ -125,14 +125,14 @@
 <br>
 <br>
 
-![in](picture/in.png) 
+![in](picture/in.PNG)
 <br>
 <br>
 
 ## 4.3.2 &emsp;BETWEEN
 <br>
 
-![between](picture/between.png) 
+![between](picture/between.PNG) 
 <br>
 <br>
 
