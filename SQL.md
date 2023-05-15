@@ -103,6 +103,73 @@ where &emsp;SIGN(temperature) = 1;
 以下两句结果相同  
 select &emsp;* &emsp; FROM form1; &emsp;ORDER BY&emsp;1;  
 select &emsp;* &emsp; FROM form1; &emsp;ORDER BY&emsp;name;
+<br> 
+<br> 
 
+- 默认以升序排列，如果想要降序排列的话  
+select &emsp;* &emsp; FROM form1; &emsp;ORDER BY&emsp;name DESC;
+<br>
+<br> 
+
+## 6.4&emsp;GROUP BY
+GROUP BYを使うと、列の値に従って行をグループ化することができる。
+GROUP BYは、指定された列の値が等しい行をまとめることによって、表をいくつかのグループに分ける。
+<br>
+
+select &emsp;sex,&emsp;sum(price) from&emsp; goods&emsp; group by&emsp; sex;
+<br>
+
+- GROUP BYに指定する列は、必ずしもselect句に指定する必要がない。
+<br>
+<br> 
+
+## 6.5&emsp;HAVING
+以下语句会报错  （WHEREの中で集計関数を使うことはできない）  
+select &emsp;sex &emsp;AVG(price)  
+FROM goods  
+WHERE AVG(price) <200;  
+GROUP BY sex;
+<br>
+<br> 
+
+这时候就要用到HAVING  
+select &emsp;sex &emsp;AVG(price)  
+FROM goods  
+GROUP BY sex
+HAVING AVG(price) <200;  
+<br>
+<br> 
+
+## 6.6&emsp;組み合わせ
+FROMのあと、句の優先順位にしたがって、WHERE句、groupby句、HAVING句という順序で処理される。
+
+
+SELECT NAME AVG(MIANJI/NUM)
+FROM BIAGE
+GROUP BY AREA
+HAVING AVG(MIANJI/NUM) > 10;
+<br>
+<br> 
+
+## 7.4&emsp;自己結合
+### データの整合性をチェックするために役立つ
+<br> 
+
+select &emsp;F.ID, &emsp;F,NAME,  
+&emsp;&emsp;&emsp;&emsp;S.ID,&emsp;S.NAME    
+FROM &emsp;F,S  
+WHERE &emsp;F.ID &emsp;=&emsp;S.ID  
+&emsp;AND&emsp;F.NAME&emsp;<>&emsp;S.NAME;
+
+<br>
+<br> 
+
+### 例：结合两表计算每个人的消费总量 按照总金额由高到低排序
+
+select a.name,&emsp;sum(a.amount * b.price )orderprice  
+ from goods.order as a,&emsp;goods.goods as b  
+ where a.CODE = b.idgoods  
+ group by a.name  
+ order by orderprice desc
 
 
