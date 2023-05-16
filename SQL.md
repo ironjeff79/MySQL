@@ -171,5 +171,151 @@ select a.name,&emsp;sum(a.amount * b.price )orderprice
  where a.CODE = b.idgoods  
  group by a.name  
  order by orderprice desc
+<br>
+<br> 
+<br>
 
+## 8.1.3&emsp;結果が一つに定まらないサブクエリー
+### 错误❌例
+### この場合には、LIKE述語という、曖昧な検索のための条件を使ったため、サブクエリーの結果が一つ定まらず、そのためにエラーが起こる。　　
+### **通常、サブクエリーの結果は、一つ定まるように設定しなきゃいけない**
+<br> 
+<br>
+
+select &emsp;*  
+FROM &emsp;form1  
+WHERE &emsp;code &emsp;=&emsp;  
+&emsp;&emsp;(SELECT&emsp;code  
+&emsp;&emsp;FROM&emsp;form2  
+&emsp;&emsp;WHERE name LIKE '%xxx');
+<br> 
+<br>
+
+### 正确✔例
+select &emsp;*  
+FROM &emsp;form1  
+WHERE &emsp;code &emsp;IN&emsp;  
+&emsp;&emsp;(SELECT&emsp;code  
+&emsp;&emsp;FROM&emsp;form2  
+&emsp;&emsp;WHERE name LIKE '%xxx');
+<br>
+
+### &emsp;＝演算子ではなくIN述語を使って値を比較すれば、エラーを避けることができる。
+<br> 
+<br>
+
+## 8.2.2&emsp;サブクエリーのネスト
+### 例 平均受注額を超える受注のあった得意先を検索する
+<br>
+
+select &emsp;T.client,&emsp;t.address,&emsp;t.phoneNum  
+FROM &emsp;Client as T  
+WHERE &emsp;T.client &emsp;IN&emsp;  
+&emsp;&emsp;(SELECT&emsp;J.client  
+&emsp;&emsp;FROM&emsp;order as J,&emsp;goods S  
+&emsp;&emsp;WHERE J.code = S.code  
+&emsp;&emsp;&emsp;AND  
+&emsp;&emsp;&emsp;J.amount * S.price >  
+&emsp;&emsp;&emsp;&emsp;(SELECT　AVG(J.amount * S.price)  
+&emsp;&emsp;&emsp;&emsp;FROM&emsp;order as J,&emsp;goods S  
+&emsp;&emsp;&emsp;&emsp;WHERE J.code = S.code ));
+
+<br>
+<br>
+
+## 8.2.3&emsp;GROUP BY句和HAVING句的使用
+### 例 全体の平均より平均受注数量が多い得意先を検索する
+<br>
+
+select &emsp;name,&emsp;AVG(amount)   
+FROM &emsp;order  
+GRUOP BY&emsp;name  
+HAVING&emsp;AVG(amount)　＞　　  
+&emsp;&emsp;(SELECT&emsp;AVG(amount)  
+&emsp;&emsp;FROM&emsp;order);
+<br>
+<br>
+
+## 8.3&emsp;相関サブクエリー(correlated subqueries)
+### 相関サブクエリーは、特殊な性格を持つサブクエリーである。
+### 相関サブクエリーでは、サブクエリーの外部の、本体のクエリーの要素をサブクエリーの中で使うことができる。そのため、相関サブクエリーを単独で実行することはできない。
+<br>
+<br>
+
+### SQL---关联子查询（correlated subquery）
+关联子查询和普通子查询的区别在于：
+1. 关联子查询引用了外部查询的列。
+2. 执行顺序不同。对于普通子查询，先执行普通子查询，再执行外层查询；而对于关联子查询，先执行外层查询，然后对所有通过过滤条件的记录执行内层查询。
+3. 关联子查询不能单独运行
+<br>
+<br>
+
+### 相関サブクエリーを使って、dressに対する受注を選び出す
+<br>
+
+
+select *  
+from goods.order&emsp; B  
+where 'dress'&emsp; =    
+&emsp;&emsp;(select goodsname   
+&emsp;&emsp;from goods.goods &emsp;as&emsp; A  
+&emsp;&emsp;where A.idgoods&emsp; = &emsp;B.code)
+<br>
+<br>
+
+## 8.4&emsp;EXISTS,ANY,ALL
+### 8.4.1 EXISTS
+### __existsの対象となるサブクエリーでは、「SELECT　*」を使っていること__
+#### 通常のサブクエリーを扱う場合、EXISTSは、結果が存在するかどうかを一度しか評価しないが、相関サブクエリーを扱う場合は、それぞれの行について評価する。
+<br>
+
+### NOT  EXISTS
+#### 例 没有被订购过的物品（NOT EXISTS & CORRELATED SUBQUERY）
+<br>
+
+
+select *  
+from goods.goods&emsp; B  
+where &emsp; NOT EXISTS    
+&emsp;&emsp;(select *   
+&emsp;&emsp;from goods.order &emsp;as&emsp; A  
+&emsp;&emsp;where  B.idgoods&emsp; = &emsp;A.code);
+<br>
+<br>
+
+### 8.4.2 ANY
+### ANYは、比較演算子に従ってそれぞれの値を列の値と比較し、いずれかの値が条件を満たせば、全体の条件が成立したものとしてTRUEを返す
+
+<br>
+
+#### (ANY AND SUBQUERY)
+select *    
+from goods.order  
+where date = ANY  
+&emsp;&emsp;(select date  
+&emsp;&emsp;from goods.order  
+&emsp;&emsp;where name = 'TOM')
+
+运行结果  
+2021-10-01&emsp;&emsp;TOM&emsp;&emsp;3&emsp;&emsp;3  
+2021-10-01&emsp;&emsp;BOB&emsp;&emsp; 6&emsp;&emsp;2  
+2022-03-01&emsp;&emsp;TOM&emsp;&emsp;1&emsp;&emsp;5
+<br>
+
+*このようなanyの機能は、IN述語によく似ている  
+しかし、IN述語は、複数の＝演算子のように機能するが、＝演算子以外の比較演算子の機能を持つことはできない。ANYでは、ほかの比較演算子を使うこともできる  
+SOMEは、ANYとまったく同じ機能を持つキーワードである。ANYと同様に、いろいろな比較演算子を使うことができる*
+<br>
+<br>
+
+### 8.4.3 ALL
+### 选择的是除了TOM下订单的日期以外的所有日期
+#### (<>ALL AND SUBQUERY)
+select&emsp;*    
+from &emsp;goods.order   
+where date <> all  
+&emsp;&emsp;(select&emsp;date  
+&emsp;&emsp;from&emsp;goods.order   
+&emsp;&emsp;where name = 'TOM')  
+&emsp;&emsp;order by date
 
