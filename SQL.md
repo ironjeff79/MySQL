@@ -319,3 +319,10 @@ where date <> all
 &emsp;&emsp;where name = 'TOM')  
 &emsp;&emsp;order by date
 
+运行结果  
+2022-04-15&emsp;&emsp;JEFF&emsp;&emsp;&emsp;5&emsp;&emsp;1  
+2022-03-15&emsp;&emsp;ALICE&emsp;&emsp; 4&emsp;&emsp;1  
+2022-01-01&emsp;&emsp;JEFF&emsp;&emsp;&emsp;2&emsp;&emsp;4
+<br>
+
+
