@@ -324,5 +324,53 @@ where date <> all
 2022-03-15&emsp;&emsp;ALICE&emsp;&emsp; 4&emsp;&emsp;1  
 2022-01-01&emsp;&emsp;JEFF&emsp;&emsp;&emsp;2&emsp;&emsp;4
 <br>
+<br>
+<br>
 
+## 9 データの操作
+<br>
+
+### 9.1.2 INSERT...SELECT
+*INSERT...SELECT文では、ある表に登録されているデータを別の表にまとめてコピーすることができる*  
+
+INSET INTO from2(column1,column2)  
+SELECT column1，column2  
+FROM　from1  
+WHERE&emsp;condition  
+<br>
+<br>
+
+### 9.3 DELETE
+<br>
+- DELETE文は、行単位でデータを削除する。個別の列の値を削除することはできない
+（一方、UPDATE文は、個別の列の値を変更することはできる）
+- DELETE文が削除するのは、行だけである。表自体を削除することはできない。（表全体
+を削除するには、DROP　TABLE文を使う）
+<br>
+<br>
+
+### 9.4.2 データ制御言語
+<br> 
+
+- SQLでは、データベースに対する一連の処理を、ひとつのまとまった作業単位として管理することができる。このような作業単位のことをトランザクション（TRANSACTION）と呼ぶ。
+- 一連の処理を正しく実行することができなかった場合には、ROLLBACK文を使ってトランザクションを取り消し、データベースを変更前の状態に戻す。SAVEPOINTとして定義された、特定の時点まで戻すこともできる。
+<br>
+<br>
+
+### 9.4.2セキュリティ管理
+### **ユーザーに権限を与えるには、GRANT文を使う。**
+<br>
+
+例子  
+GRANT <权限>[,<权限>]...  
+ON <对象类型> <对象名>[,<对象类型> <对象名>]…  
+TO <用户>[,<用户>]...  
+[WITH GRANT OPTION；有这个则用户还可以授权给别人];
+
+### **ユーザーから権限を奪うには、REVOKE文を使う。**
+<br>
+
+REVOKE <权限>[,<权限>]...  
+ON <对象类型> <对象名>[,<对象类型><对象名>]…  
+FROM <用户>[,<用户>]...[CASCADE | RESTRICT];
 
