@@ -373,4 +373,48 @@ TO <用户>[,<用户>]...
 REVOKE <权限>[,<权限>]...  
 ON <对象类型> <对象名>[,<对象类型><对象名>]…  
 FROM <用户>[,<用户>]...[CASCADE | RESTRICT];
+<br>
+<br>
 
+## 10. エラーへの対処方法
+<br>
+
+### 10.1.2NULL値を『=NULL』で検索しようとした
+- 一般に、クエリーは、検索条件が成立してTRUEが返されたときにのみ、行を出力する。
+＝演算子でNULL値を扱うと、UNKNOWNが返され、検索条件が成立したとはみなされないため、行が出力されないのである。
+<br>
+<br>
+
+### 10.1.4WHEREの中で集計関数を使った（１）
+### 错误❌例
+### WHEREの中で集計関数を使うことはできないのである。
+<br> 
+
+select &emsp;shopname  
+FROM &emsp;form1  
+WHERE &emsp;size &emsp;=&emsp;MAX(size);  
+<br>
+
+### 正确✔例
+select &emsp;shopname  
+FROM &emsp;form1  
+WHERE &emsp;size &emsp;=&emsp;  
+&emsp;&emsp;(SELECT&emsp;MAX(size)  
+&emsp;&emsp;FROM&emsp;form1);
+<br>
+<br>
+
+### **10.1.5WHEREの中で集計関数を使った（2）**
+### 错误❌例
+select &emsp;area,AVG(size)  
+FROM &emsp;form1  
+WHERE &emsp;AVG(size) &emsp;<&emsp;800&emsp;&emsp;&emsp;*ここではグループ関数は使用できない*  
+GROUP BY&emsp;area; 
+<br> 
+<br>
+
+### 正确✔例(この場合は、HAVING関数を使う)
+select &emsp;area,AVG(size)  
+FROM &emsp;form1  
+GROUP BY &emsp;area &emsp;  
+HAVING AVG(size)&emsp;<800  
