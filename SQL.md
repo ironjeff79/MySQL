@@ -254,12 +254,12 @@ HAVING&emsp;AVG(amount)　＞　　
 <br>
 
 
-select *  
-from goods.order&emsp; B  
-where 'dress'&emsp; =    
-&emsp;&emsp;(select goodsname   
-&emsp;&emsp;from goods.goods &emsp;as&emsp; A  
-&emsp;&emsp;where A.idgoods&emsp; = &emsp;B.code)
+select *   
+from goods.order   
+where goods.order.code =   
+(select idgoods from goods.goods  
+where idgoods =  code  
+and goodsname = 'dress');
 <br>
 <br>
 
