@@ -501,3 +501,223 @@ extern 修饰符通常用于当有两个或多个文件共享相同的全局变�
         return 0;   
     }
 <BR><BR>    
+
+	# C 指针
+## 什么是指针？
+### 指针也就是内存地址，指针变量是用来存放内存地址的变量。就像其他变量或常量一样，您必须在使用指针存储其他变量地址之前，对其进行声明。指针变量声明的一般形式为：
+    type *var_name;
+
+## 如何使用指针？
+### 使用指针时会频繁进行以下几个操作：定义一个指针变量、把变量地址赋值给指针、访问指针变量中可用地址的值。这些是通过使用一元运算符 * 来返回位于操作数所指定地址的变量的值。下面的实例涉及到了这些操作： 
+<br>
+
+## 实例 
+
+    #include <stdio.h>
+    int main ()
+    {
+        int  var = 20;   /* 实际变量的声明 */
+        int  *ip;        /* 指针变量的声明 */
+        ip = &var;  /* 在指针变量中存储 var 的地址 */
+        printf("var 变量的地址: %p\n", &var  );
+ 
+        /* 在指针变量中存储的地址 */
+        printf("ip 变量存储的地址: %p\n", ip );
+ 
+        /* 使用指针访问值 */
+        printf("*ip 变量的值: %d\n", *ip );
+        return 0;
+    }
+### 执行结果
+var 变量的地址: 0x7ffeeef168d8  
+ip 变量存储的地址: 0x7ffeeef168d8  
+*ip 变量的值: 20  
+<BR><BR>
+
+## C 中的 NULL 指针
+### 在变量声明的时候，如果没有确切的地址可以赋值，为指针变量赋一个 NULL 值是一个良好的编程习惯。赋为 NULL 值的指针被称为空指针。  
+### NULL 指针是一个定义在标准库中的值为零的常量。请看下面的程序：
+
+实例
+
+    #include <stdio.h>
+ 
+    int main ()
+    {
+        int  *ptr = NULL;
+        printf("ptr 的地址是 %p\n", ptr  );
+        return 0;
+    }
+
+### 在大多数的操作系统上，程序不允许访问地址为 0 的内存，因为该内存是操作系统保留的。然而，内存地址 0 有特别重要的意义，它表明该指针不指向一个可访问的内存位置。但按照惯例，如果指针包含空值（零值），则假定它不指向任何东西。
+### 如需检查一个空指针，您可以使用 if 语句，如下所示：
+    if(ptr)     /* 如果 p 非空，则完成 */
+    if(!ptr)    /* 如果 p 为空，则完成 */
+<br><BR>
+
+## 递增一个指针
+### 我们喜欢在程序中使用指针代替数组，因为变量指针可以递增，而数组不能递增，数组可以看成一个指针常量。下面的程序递增变量指针，以便顺序访问数组中的每一个元素：
+
+    #include <stdio.h>
+    const int MAX = 3;
+    int main ()
+    {
+        int  var[] = {10, 100, 200};
+        int  i, *ptr;
+        /* 指针中的数组地址 */
+        ptr = var;
+        for ( i = 0; i < MAX; i++)
+    {    
+           printf("存储地址：var[%d] = %p\n", i, ptr );
+           printf("存储值：var[%d] = %d\n", i, *ptr );
+           /* 指向下一个位置 */
+           ptr++;
+        }
+        return 0;
+    }
+### 执行结果  
+存储地址：var[0] = 0x7ffd62b0f174  
+存储值：var[0] = 10  
+存储地址：var[1] = 0x7ffd62b0f178  
+存储值：var[1] = 100  
+存储地址：var[2] = 0x7ffd62b0f17c  
+存储值：var[2] = 200    
+<BR><BR>
+
+## 指针的比较
+### 指针可以用关系运算符进行比较，如 ==、< 和 >。如果 p1 和 p2 指向两个相关的变量，比如同一个数组中的不同元素，则可对 p1 和 p2 进行大小比较。
+### 下面的程序修改了上面的实例，只要变量指针所指向的地址小于或等于数组的最后一个元素的地址 &var[MAX - 1]，则把变量指针进行递增：
+
+    #include <stdio.h>
+    const int MAX = 3;
+    int main ()
+    {
+        int  var[] = {10, 100, 200};
+        int  i, *ptr;
+       /* 指针中第一个元素的地址 */
+        ptr = var;
+        i = 0;
+        while ( ptr <= &var[MAX - 1] )
+        {
+           printf("存储地址：var[%d] = %p\n", i, ptr );
+           printf("存储值：var[%d] = %d\n", i, *ptr );
+           /* 指向上一个位置 */
+           ptr++;
+           i++;
+         }
+        return 0;
+    }
+
+## 传递指针给函数
+
+    #include <stdio.h>
+    #include <time.h>
+    void getSeconds(unsigned long *par);
+    int main ()
+    {
+        unsigned long sec;
+        getSeconds( &sec );
+       /* 输出实际值 */
+        printf("Number of seconds: %ld\n", sec );
+        return 0;
+    }
+    void getSeconds(unsigned long *par)
+    {
+       /* 获取当前的秒数 */
+        *par = time( NULL );
+       return;
+    }  
+## 运行结果 Number of seconds: 1685350228          
+
+<BR><BR>
+
+# C语言随机函数：rand（）和srand()
+## 一、rand()函数
+### 1、rand()函数原理
+rand()函数用于产生一个随机数，其内部实现是用线性同余法实现的，是伪随机数，由于周期较长，因此在一定范围内可以看成是随机的。调用rand()函数会得到一个在0-RAND_MAX。
+**RAND_MAX在头文件stdlib.h中定义。**
+### 2、调用方法
+想要使用rand()函数产生一个（a，b）区间的数num，可以使用以下两种方式：
+1. num=a+(b-a+1)*rand()/(RAND-MAX+1.0)；
+2. a+rand%(b-a+1)；  
+
+注意公式（1）用的是“/”，而公式（2）是“%”。
+下面使用两种写一个简单函数：例如要随机产生1-10之间的数。
+<BR><BR><BR>
+
+# C 函数指针与回调函数
+## 函数指针
+函数指针是指向函数的指针变量。
+通常我们说的指针变量是指向一个整型、字符型或数组等变量，而函数指针是指向函数。
+函数指针可以像一般函数一样，用于调用函数、传递参数。
+函数指针变量的声明：
+    
+    typedef int (*fun_ptr)(int,int); // 声明一个指向同样参数、返回值的函数指针类型
+
+## 实例
+
+    #include <stdio.h>  
+    int max(int x, int y)
+    {
+        return x > y ? x : y;
+    }
+    int main(void)
+    {
+        /* p 是函数指针 */
+        int (* p)(int, int) = & max; // &可以省略
+        int a, b, c, d;
+
+        printf("请输入三个数字:");
+        scanf("%d %d %d", & a, & b, & c);
+        
+        /* 与直接调用函数等价，d = max(max(a, b), c) */
+        d = p(p(a, b), c); 
+        printf("最大的数字是: %d\n", d);
+        return 0;
+    }
+### 运行结果
+请输入三个数字:1 2 3  
+最大的数字是: 3
+<BR><BR>
+
+## 回调函数
+### 函数指针作为某个函数的参数
+
+函数指针变量可以作为某个函数的参数来使用的，回调函数就是一个通过函数指针调用的函数。
+简单讲：回调函数是由别人的函数执行时调用你实现的函数。  
+
+*你到一个商店买东西，刚好你要的东西没有货，于是你在店员那里留下了你的电话，过了几天店里有货了，店员就打了你的电话，然后你接到电话后就到店里去取了货。在这个例子里，你的电话号码就叫回调函数，你把电话留给店员就叫登记回调函数，店里后来有货了叫做触发了回调关联的事件，店员给你打电话叫做调用回调函数，你到店里去取货叫做响应回调事件。*
+
+### 实例
+实例中 populate_array() 函数定义了三个参数，其中第三个参数是函数的指针，通过该函数来设置数组的值。  
+实例中我们定义了回调函数 getNextRandomValue()，它返回一个随机值，它作为一个函数指针传递给 populate_array() 函数。
+populate_array() 将调用 10 次回调函数，并将回调函数的返回值赋值给数组。
+
+    #include <stdlib.h>  
+    #include <stdio.h>
+
+    void populate_array(int *array, size_t arraySize, int (*getNextValue)(void))
+    {
+        for (size_t i=0; i<arraySize; i++)
+            array[i] = getNextValue();
+    }
+ 
+    // 获取随机值
+    int getNextRandomValue(void)
+    {
+        return rand();
+    }
+    int main(void)
+    {
+        int myarray[10];
+        /* getNextRandomValue 不能加括号，否则无法编译，因为加上括号之后相当于传入此参数时传入了 int , 而不是函数指针*/
+        populate_array(myarray, 10, getNextRandomValue);
+        for(int i = 0; i < 10; i++) {
+            printf("%d ", myarray[i]);
+        }
+        printf("\n");
+        return 0;
+    }
+### 运行如果
+1804289383 846930886 1681692777 1714636915 1957747793 424238335 719885386 1649760492 596516649 1189641421 
+<BR><BR><BR>
