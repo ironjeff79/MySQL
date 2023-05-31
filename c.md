@@ -721,3 +721,139 @@ populate_array() 将调用 10 次回调函数，并将回调函数的返回值�
 ### 运行如果
 1804289383 846930886 1681692777 1714636915 1957747793 424238335 719885386 1649760492 596516649 1189641421 
 <BR><BR><BR>
+
+# C字符串
+## C 中有大量操作字符串的函数：
+<br>
+
+| 函数 |   目的 | 
+|:--------| :---------| 
+| strcpy(s1, s2); | 复制字符串 s2 到字符串 s1。|
+|strcat(s1, s2);| 连接字符串 s2 到字符串 s1 的末尾。|
+|strlen(s1);|返回字符串 s1 的长度。|
+|strcmp(s1, s2);|如果 s1 和 s2 是相同的，则返回 0；如果 s1<s2 则返回小于 0；如果 s1>s2 则返回大于 0。|
+|strchr(s1, ch);|返回一个指针，指向字符串 s1 中字符 ch 的第一次出现的位置。|
+|strstr(s1, s2);|返回一个指针，指向字符串 s1 中字符串 s2 的第一次出现的位置。|
+<Br>
+
+## 实例
+
+    #include <stdio.h>
+    #include <string.h>
+    int main ()
+    {  char str1[10] = "抹茶";
+       char str2[10] = "星冰乐";
+       char str3[10];
+        int lea ;
+ 
+        /* 复制 str1 到 str3 */
+       strcpy(str3, str1);
+       printf("strcpy( str3, str1) :  %s\n", str3 );
+ 
+        /* 连接 str1 和 str2 */
+       strcat( str1, str2);
+       printf("strcat( str1, str2):   %s\n", str1 );
+ 
+       /* 连接后，str1 的总长度 */
+       lea = strlen(str1);
+       printf("strlen(str1) :  %d\n", lea );
+       return 0;
+    }
+
+### 运行结果
+strcpy( str3, str1) :  抹茶  
+strcat( str1, str2):   抹茶星冰乐  
+strlen(str1) :  15（5个字符）
+<br><Br>
+
+# C 结构体
+## C 数组允许定义可存储相同类型数据项的变量，结构是 C 编程中另一种用户自定义的可用的数据类型，它允许您存储不同类型的数据项。
+
+## 结构体中的数据成员可以是基本数据类型（如 int、float、char 等），也可以是其他结构体类型、指针类型等。
+<br>
+
+### 结构体的成员可以包含其他结构体，也可以包含指向自己结构体类型的指针，而通常这种指针的应用是为了实现一些更高级的数据结构如链表和树等。
+
+    //此结构体的声明包含了其他的结构体
+    struct COMPLEX
+    {
+        char string[100];
+        struct SIMPLE a;
+    };
+    
+    //此结构体的声明包含了指向自己类型的指针
+    struct NODE
+    {
+        char string[100];
+        struct NODE *next_node;
+    };
+
+## 访问结构成员
+为了访问结构的成员，我们使用成员访问运算符（.）。成员访问运算符是结构变量名称和我们要访问的结构成员之间的一个句号。您可以使用 struct 关键字来定义结构类型的变量。下面的实例演示了结构的用法：
+
+    #include <stdio.h>
+    #include <string.h>
+
+    struct Books
+    {
+        char  title[50];
+        char  author[50];
+        char  subject[100];
+        int   book_id;
+    };
+ 
+    int main( )
+    {
+        struct Books Book1;        /* 声明 Book1，类型为 Books */
+        struct Books Book2;        /* 声明 Book2，类型为 Books */
+ 
+        /* Book1 详述 */
+        strcpy( Book1.title, "C Programming");
+        strcpy( Book1.author, "Ali"); 
+        strcpy( Book1.subject, "C Tutorial");
+        Book1.book_id =001;
+ 
+        /* Book2 详述 */
+        strcpy( Book2.title, "SQL");
+        strcpy( Book2.author, "Tom");
+        strcpy( Book2.subject, "SQL Tutorial");
+        Book2.book_id = 002;
+ 
+        /* 输出 Book1 信息 */
+        printf( "Book 1 title : %s\n", Book1.title);
+        printf( "Book 1 author : %s\n", Book1.author);
+        printf( "Book 1 subject : %s\n", Book1.subject);
+        printf( "Book 1 book_id : %d\n", Book1.book_id);
+ 
+        /* 输出 Book2 信息 */
+        printf( "Book 2 title : %s\n", Book2.title);
+        printf( "Book 2 author : %s\n", Book2.author);
+        printf( "Book 2 subject : %s\n", Book2.subject);
+        printf( "Book 2 book_id : %d\n", Book2.book_id);
+ 
+        return 0;
+        }
+### 运行结果
+Book 1 title : C Programming  
+Book 1 author : Ali  
+Book 1 subject : C Tutorial  
+Book 1 book_id : 1  
+Book 2 title : SQL  
+Book 2 author : Tom  
+Book 2 subject : SQL Tutorial  
+Book 2 book_id : 2  
+<BR><br>
+
+# C 共用体
+### 共用体是一种特殊的数据类型，允许您在相同的内存位置存储不同的数据类型。您可以定义一个带有多成员的共用体，但是任何时候只能有一个成员带有值。共用体提供了一种使用相同的内存位置的有效方式。
+## 定义共用体
+### 为了定义共用体，您必须使用 union 语句，方式与定义结构类似。union 语句定义了一个新的数据类型，带有多个成员。union 语句的格式如下：
+    union [union tag]
+    {
+      member definition;
+      member definition;
+      ...
+      member definition;
+    } [one or more union variables];
+
+### union tag 是可选的，每个 member definition 是标准的变量定义，比如 int i; 或者 float f; 或者其他有效的变量定义。	
